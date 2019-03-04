@@ -32,19 +32,13 @@ const Review = ({ review, index, removeReview }) => {
   );
 };
 
-const LeftContent = ({ reactions }) => {
-  let content = [];
-  reactions.forEach((value, key) => content.push({ value, key }));
-  return (
-    <div className="content content--left">
-      {content.map(reaction => (
-        <div key={reaction.key} className="reaction">
-          {reaction.value}
-        </div>
-      ))}
+const LeftContent = ({ reviews, currentIndex }) => (
+  <div className="content content--left">
+    <div className="reaction">
+      <Reaction review={reviews[currentIndex]} />
     </div>
-  );
-};
+  </div>
+);
 
 const RightContent = ({ reviews, addReview, removeReview }) => (
   <div className="content content--right">
@@ -82,9 +76,9 @@ class App extends Component {
   state = {
     reviews: [
       {
-        text: 'He stole my boat?',
-        rating: 1,
-        datetime: 1551641410975,
+        text: "Stole us fire from down below! That's been really helpful.",
+        rating: 5,
+        datetime: 1551642810975,
       },
       {
         text: "Brought us coconuts, but I'm allergic.",
@@ -92,37 +86,26 @@ class App extends Component {
         datetime: 1551642517315,
       },
       {
-        text: "Stole us fire from down below! That's been really helpful.",
-        rating: 5,
-        datetime: 1551642810975,
+        text:
+          'He tried to steal my boat and abandon me on an island alone. Not cool.',
+        rating: 1,
+        datetime: 1551641410975,
       },
     ],
-    reactions: new Map(),
+    currentIndex: 0,
   };
 
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.reviews.length < this.state.reviews.length) {
-      const reviews = Array.from(this.state.reviews);
-      this.handleReaction(reviews.pop());
-    }
+  componentDidMount() {
+    this.interval = setInterval(() => {
+      this.setState({
+        currentIndex: (this.state.currentIndex + 1) % this.state.reviews.length,
+      });
+    }, 5000);
   }
 
-  handleReaction = review => {
-    const { datetime } = review;
-    const { reactions } = this.state;
-    const reaction = <Reaction review={review} />;
-
-    reactions.set(datetime, reaction);
-    this.setState({
-      reactions,
-    });
-    setTimeout(() => {
-      reactions.delete(datetime);
-      this.setState({
-        reactions,
-      });
-    }, 6000);
-  };
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
 
   addReview = (text, rating) => {
     const newReviews = [
@@ -139,11 +122,11 @@ class App extends Component {
   };
 
   render() {
-    const { reviews, reactions } = this.state;
+    const { reviews, currentIndex } = this.state;
 
     return (
       <div className="App">
-        <LeftContent reactions={reactions} />
+        <LeftContent reviews={reviews} currentIndex={currentIndex} />
         <RightContent
           reviews={reviews}
           removeReview={this.removeReview}

@@ -108,9 +108,11 @@
 
 .reaction {
   margin: auto;
+  max-width: 90%;
   img {
     margin: auto;
     display: block;
+    width: 100%;
   }
 }
 
