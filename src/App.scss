@@ -1,0 +1,122 @@
+.App {
+  display: inline-flex;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.content {
+  &.content--left {
+    width: 40%;
+    height: 100vh;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  &.content--right {
+    width: 60%;
+    padding-bottom: 300px;
+    background: #fce8c7ff;
+    border-left: 10px solid black;
+  }
+}
+
+.review-board__header {
+  display: flex;
+  justify-content: center;
+  height: 100px;
+  margin: 40px 20px 20px;
+  img {
+    max-height: 100%;
+  }
+  .review-board__header__title {
+    margin: 0 20px;
+  }
+  .reversed {
+    -moz-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: FlipH;
+    -ms-filter: 'FlipH';
+  }
+}
+
+.review-form-container {
+  font-size: 25px;
+  line-height: 40px;
+  margin: 50px 50px 30px;
+  text-align: center;
+}
+
+.review-form {
+  width: 500px;
+  margin: 30px auto;
+  .review-form__rater {
+    display: flex;
+    align-content: center;
+    .review-form__rater__message {
+      font-size: 12px;
+      margin-left: 10px;
+    }
+  }
+  .review-form__submission-container {
+    display: inline-flex;
+    width: 100%;
+    input {
+      width: 80%;
+      font-size: 30px;
+    }
+    .review-form__submit-button {
+      font-size: 20px;
+      padding: 2px 10px;
+      width: 15%;
+      margin-left: 5%;
+      background: white;
+      border: 2px solid black;
+    }
+  }
+}
+
+.review-container {
+  width: 600px;
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.review {
+  background: white;
+  width: 500px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 2px solid black;
+  position: relative;
+  box-sizing: border-box;
+  .review__datetime {
+    margin-bottom: 10px;
+  }
+  .review__text {
+    margin-top: 10px;
+  }
+  .review__cancel {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    height: 15px;
+  }
+}
+
+.reaction {
+  margin: auto;
+  img {
+    margin: auto;
+    display: block;
+  }
+}
+
+.reaction__review-text {
+  font-size: 30px;
+  font-style: italic;
+  text-align: center;
+  margin-bottom: 15px;
+}
