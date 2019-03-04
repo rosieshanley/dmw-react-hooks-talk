@@ -109,16 +109,18 @@
 .reaction {
   margin: auto;
   max-width: 90%;
+  font-size: 30px;
+  text-align: center;
+  .reaction__review-text {
+    font-style: italic;
+  }
+  .reaction__review-text,
+  .react-rater {
+    margin-bottom: 15px;
+  }
   img {
     margin: auto;
     display: block;
     width: 100%;
   }
-}
-
-.reaction__review-text {
-  font-size: 30px;
-  font-style: italic;
-  text-align: center;
-  margin-bottom: 15px;
 }

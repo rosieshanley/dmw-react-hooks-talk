@@ -1,5 +1,6 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { number } from 'prop-types';
+import Rater from 'react-rater';
 import one from '../assets/1.gif';
 import two from '../assets/2.gif';
 import three from '../assets/3.gif';
@@ -25,12 +26,14 @@ const reactionGIF = rating => {
 };
 
 const Reaction = ({ review }) => {
+  if (!review) return null;
   const src = reactionGIF(review.rating);
   return (
-    <Fragment>
+    <div className="reaction">
       <div className="reaction__review-text">"{review.text}"</div>
+      <Rater total={5} rating={review.rating} interactive={false} />
       <img src={src} alt={`Maui's Reaction to a rating of ${review.rating}`} />
-    </Fragment>
+    </div>
   );
 };
 

@@ -1,59 +1,43 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import Rater from 'react-rater';
 
-class ReviewForm extends Component {
-  state = { text: '', rating: 5 };
+function ReviewForm({ addReview }) {
+  let [text, setText] = useState('');
+  let [rating, setRating] = useState(5);
 
-  handleChange = e => {
-    const { target } = e;
-    const { name } = target;
-
-    this.setState({
-      [name]: target.value,
-    });
+  const resetForm = () => {
+    setText('');
+    setRating(5);
   };
 
-  handleRating = e => {
-    this.setState({
-      rating: e.rating,
-    });
-  };
-
-  handleSubmit = e => {
+  const handleSubmit = e => {
     e.preventDefault();
-    if (!this.state.text) return;
-    this.props.addReview(this.state.text, this.state.rating);
-    this.setState({ text: '', rating: 5 });
+    if (!text) return;
+    addReview(text, rating);
+    resetForm();
   };
 
-  render() {
-    const { text, rating } = this.state;
-
-    return (
-      <form className="review-form" onSubmit={this.handleSubmit}>
-        <div className="review-form__rater">
-          <Rater total={5} rating={rating} onRate={this.handleRating} />
-          <div className="review-form__rater__message">
-            (We preselected 5 for you.)
-          </div>
+  return (
+    <form className="review-form" onSubmit={handleSubmit}>
+      <div className="review-form__rater">
+        <Rater total={5} rating={rating} onRate={e => setRating(e.rating)} />
+        <div className="review-form__rater__message">
+          (We preselected 5 for you.)
         </div>
-        <div className="review-form__submission-container">
-          <input
-            className="input"
-            name="text"
-            value={text}
-            onChange={this.handleChange}
-          />
-          <div
-            onClick={this.handleSubmit}
-            className="review-form__submit-button"
-          >
-            submit
-          </div>
+      </div>
+      <div className="review-form__submission-container">
+        <input
+          className="input"
+          name="text"
+          value={text}
+          onChange={e => setText(e.target.value)}
+        />
+        <div onClick={handleSubmit} className="review-form__submit-button">
+          submit
         </div>
-      </form>
-    );
-  }
+      </div>
+    </form>
+  );
 }
 
 export default ReviewForm;
