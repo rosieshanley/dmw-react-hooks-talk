@@ -7,7 +7,6 @@ import pause from '../assets/pause.png';
 import '../App.scss';
 
 const Reaction = ({ review, feedPlaying, toggleFeedPlaying }) => {
-  console.log(review);
   if (!review) return null;
   const src = setReactionGIF(review.rating);
 

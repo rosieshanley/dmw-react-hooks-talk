@@ -4,6 +4,7 @@ import 'react-rater/lib/react-rater.css';
 import Review from './Review';
 import ReviewForm from './ReviewForm';
 import Reaction from './Reaction';
+import useToggle from './useToggle';
 import initialReviews from './initialReviews';
 import maui from './assets/maui-art.png';
 import title from './assets/title.png';
@@ -12,13 +13,13 @@ const LeftContent = ({
   reviews,
   currentIndex,
   feedPlaying,
-  setFeedPlaying,
+  toggleFeedPlaying,
 }) => (
   <div className="content content--left">
     <Reaction
       review={reviews[currentIndex]}
       feedPlaying={feedPlaying}
-      setFeedPlaying={setFeedPlaying}
+      toggleFeedPlaying={toggleFeedPlaying}
     />
   </div>
 );
@@ -58,11 +59,8 @@ const RightContent = ({ reviews, addReview, removeReview }) => (
 function App() {
   let [reviews, setReviews] = useState(initialReviews);
   let [currentIndex, setCurrentIndex] = useState(0);
-  let [feedPlaying, setFeedPlaying] = useState(true);
-  let [feedVisible, setFeedVisible] = useState(true);
-
-  const toggleFeedVisible = () => setFeedVisible(!feedVisible);
-  const toggleFeedPlaying = () => setFeedPlaying(!feedPlaying);
+  let [feedPlaying, toggleFeedPlaying] = useToggle(true);
+  let [feedVisible, toggleFeedVisible] = useToggle(true);
 
   const addReview = (text, rating) => {
     const newReviews = [...reviews, { text, rating, datetime: Date.now() }];
