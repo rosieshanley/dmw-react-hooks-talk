@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import './App.scss';
 import 'react-rater/lib/react-rater.css';
 import Review from './Review';
@@ -9,22 +9,7 @@ import initialReviews from './initialReviews';
 import maui from './assets/maui-art.png';
 import title from './assets/title.png';
 
-const LeftContent = ({
-  reviews,
-  currentIndex,
-  feedPlaying,
-  toggleFeedPlaying,
-}) => (
-  <div className="content content--left">
-    <Reaction
-      review={reviews[currentIndex]}
-      feedPlaying={feedPlaying}
-      toggleFeedPlaying={toggleFeedPlaying}
-    />
-  </div>
-);
-
-const RightContent = ({ reviews, addReview, removeReview }) => (
+const KudosBoard = ({ reviews, addReview, removeReview }) => (
   <div className="content content--right">
     <div className="review-board">
       <div className="review-board__header">
@@ -58,9 +43,39 @@ const RightContent = ({ reviews, addReview, removeReview }) => (
 
 function App() {
   let [reviews, setReviews] = useState(initialReviews);
-  let [currentIndex, setCurrentIndex] = useState(0);
-  let [feedPlaying, toggleFeedPlaying] = useToggle(true);
   let [feedVisible, toggleFeedVisible] = useToggle(true);
+
+  let [state, dispatch] = useReducer(
+    (state, action) => {
+      switch (action.type) {
+        case 'PROGRESS':
+        case 'NEXT':
+          return {
+            ...state,
+            feedIsPlaying: action.type === 'PROGRESS',
+            currentIndex: (state.currentIndex + 1) % reviews.length,
+          };
+        case 'PREV':
+          return {
+            ...state,
+            feedIsPlaying: true,
+            currentIndex:
+              (state.currentIndex - 1 + reviews.length) % reviews.length,
+          };
+        case 'TOGGLE_PLAY':
+          return {
+            ...state,
+            feedIsPlaying: !state.feedIsPlaying,
+          };
+        default:
+          return state;
+      }
+    },
+    {
+      currentIndex: 0,
+      feedIsPlaying: true,
+    }
+  );
 
   const addReview = (text, rating) => {
     const newReviews = [...reviews, { text, rating, datetime: Date.now() }];
@@ -71,19 +86,18 @@ function App() {
     const newReviews = [...reviews];
     newReviews.splice(index, 1);
     setReviews(newReviews);
-    setCurrentIndex(0);
   };
 
   useEffect(() => {
-    if (feedPlaying) {
+    if (state.feedIsPlaying) {
       const timeout = setTimeout(() => {
-        setCurrentIndex((currentIndex + 1) % reviews.length);
+        dispatch({ type: 'PROGRESS' });
       }, 3000);
       return () => {
         clearTimeout(timeout);
       };
     }
-  }, [currentIndex, reviews, feedPlaying]);
+  }, [state.currentIndex, reviews, state.feedIsPlaying]);
 
   return (
     <div className="App">
@@ -91,14 +105,15 @@ function App() {
         {feedVisible ? 'Hide Feed' : 'Display Feed'}
       </div>
       {feedVisible && (
-        <LeftContent
-          reviews={reviews}
-          currentIndex={currentIndex}
-          feedPlaying={feedPlaying}
-          toggleFeedPlaying={toggleFeedPlaying}
-        />
+        <div className="content content--left">
+          <Reaction
+            dispatch={dispatch}
+            review={reviews[state.currentIndex]}
+            feedIsPlaying={state.feedIsPlaying}
+          />
+        </div>
       )}
-      <RightContent
+      <KudosBoard
         reviews={reviews}
         removeReview={removeReview}
         addReview={addReview}

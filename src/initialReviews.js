@@ -1,6 +1,6 @@
 const initialReviews = [
   {
-    text: "Stole us fire from down below! That's been really helpful.",
+    text: 'Stole us fire from down below! That was really helpful.',
     rating: 5,
     datetime: 1551642810975,
   },
