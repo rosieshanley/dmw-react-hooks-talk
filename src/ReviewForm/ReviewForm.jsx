@@ -18,7 +18,7 @@ function ReviewForm({ addReview }) {
   };
 
   return (
-    <form className="review-form" onSubmit={handleSubmit}>
+    <form className="review-form" autoComplete="off" onSubmit={handleSubmit}>
       <div className="review-form__rater">
         <Rater total={5} rating={rating} onRate={e => setRating(e.rating)} />
         <div className="review-form__rater__message">

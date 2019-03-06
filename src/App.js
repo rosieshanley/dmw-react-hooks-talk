@@ -4,31 +4,22 @@ import 'react-rater/lib/react-rater.css';
 import Review from './Review';
 import ReviewForm from './ReviewForm';
 import Reaction from './Reaction';
+import initialReviews from './initialReviews';
 import maui from './assets/maui-art.png';
 import title from './assets/title.png';
 
-const initialReviews = [
-  {
-    text: "Stole us fire from down below! That's been really helpful.",
-    rating: 5,
-    datetime: 1551642810975,
-  },
-  {
-    text: "Brought us coconuts, but I'm allergic.",
-    rating: 3,
-    datetime: 1551642517315,
-  },
-  {
-    text:
-      'He tried to steal my boat and abandon me on an island alone. Not cool.',
-    rating: 1,
-    datetime: 1551641410975,
-  },
-];
-
-const LeftContent = ({ reviews, currentIndex }) => (
+const LeftContent = ({
+  reviews,
+  currentIndex,
+  feedPlaying,
+  setFeedPlaying,
+}) => (
   <div className="content content--left">
-    <Reaction review={reviews[currentIndex]} />
+    <Reaction
+      review={reviews[currentIndex]}
+      feedPlaying={feedPlaying}
+      setFeedPlaying={setFeedPlaying}
+    />
   </div>
 );
 
@@ -65,18 +56,13 @@ const RightContent = ({ reviews, addReview, removeReview }) => (
 );
 
 function App() {
-  let [currentIndex, setCurrentIndex] = useState(0);
   let [reviews, setReviews] = useState(initialReviews);
+  let [currentIndex, setCurrentIndex] = useState(0);
+  let [feedPlaying, setFeedPlaying] = useState(true);
+  let [feedVisible, setFeedVisible] = useState(true);
 
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setCurrentIndex((currentIndex + 1) % reviews.length);
-    }, 3000);
-
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, [currentIndex, reviews]);
+  const toggleFeedVisible = () => setFeedVisible(!feedVisible);
+  const toggleFeedPlaying = () => setFeedPlaying(!feedPlaying);
 
   const addReview = (text, rating) => {
     const newReviews = [...reviews, { text, rating, datetime: Date.now() }];
@@ -87,11 +73,33 @@ function App() {
     const newReviews = [...reviews];
     newReviews.splice(index, 1);
     setReviews(newReviews);
+    setCurrentIndex(0);
   };
+
+  useEffect(() => {
+    if (feedPlaying) {
+      const timeout = setTimeout(() => {
+        setCurrentIndex((currentIndex + 1) % reviews.length);
+      }, 3000);
+      return () => {
+        clearTimeout(timeout);
+      };
+    }
+  }, [currentIndex, reviews, feedPlaying]);
 
   return (
     <div className="App">
-      <LeftContent reviews={reviews} currentIndex={currentIndex} />
+      <div className="feed-toggler" onClick={toggleFeedVisible}>
+        {feedVisible ? 'Hide Feed' : 'Display Feed'}
+      </div>
+      {feedVisible && (
+        <LeftContent
+          reviews={reviews}
+          currentIndex={currentIndex}
+          feedPlaying={feedPlaying}
+          toggleFeedPlaying={toggleFeedPlaying}
+        />
+      )}
       <RightContent
         reviews={reviews}
         removeReview={removeReview}
