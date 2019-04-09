@@ -1,0 +1,120 @@
+@import '~nutrien-style-guide/src/lib/colors/colors';
+
+.pagination {
+  margin: 0;
+  padding: 0;
+  font-size: 1em;
+  font-family: inherit;
+  text-align: center;
+}
+
+.rc-pagination-prev,
+.rc-pagination-next {
+  color: $nutrien-green;
+}
+
+.rc-pagination-prev,
+.rc-pagination-next,
+.rc-pagination-item,
+.rc-pagination-jump-next,
+.rc-pagination-jump-prev {
+  cursor: pointer;
+  display: inline-block;
+  float: none;
+  width: 44px;
+  height: 44px;
+  font-weight: 600;
+  line-height: 44px;
+  border: none;
+}
+
+.rc-pagination-item {
+  font-weight: 600;
+  text-align: center;
+  color: $nutrien-grey-2;
+}
+.rc-pagination-item:hover {
+  border: none;
+}
+
+.rc-pagination-disabled,
+.rc-pagination-item-active {
+  cursor: default;
+}
+
+.rc-pagination-item-active {
+  border-radius: 0;
+  background: $nutrien-grey--disabled-fill;
+}
+
+.rc-pagination-disabled {
+  color: $nutrien-grey--icon;
+}
+
+.rc-pagination-jump-prev:after,
+.rc-pagination-jump-next:after {
+  content: '\2022\2022\2022';
+  display: block;
+  letter-spacing: 3px;
+  color: $nutrien-grey--inactive-outline;
+}
+
+.pagination__mobile .rc-pagination-disabled {
+  display: none;
+}
+
+.pagination__mobile {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.pagination__mobile .rc-pagination-prev,
+.pagination__mobile .rc-pagination-next {
+  border: none;
+  height: 24px;
+  line-height: 24px;
+  margin: 0;
+  font-size: 18px;
+}
+
+.rc-pagination-slash {
+  margin: 0 10px 0 0;
+}
+
+.pagination__mobile .rc-pagination-simple-pager {
+  margin-right: 8px;
+  list-style: none;
+}
+
+.pagination__mobile input {
+  margin: 0 8px;
+  box-sizing: border-box;
+  background-color: $nutrien-white;
+  border-radius: 6px;
+  border: 1px solid $nutrien-light-grey-2;
+  outline: none;
+  padding: 5px 8px;
+  min-height: 20px;
+}
+
+.pagination__mobile .rc-pagination-prev,
+.pagination__mobile .rc-pagination-next {
+  border: none;
+  height: 24px;
+  line-height: 24px;
+  margin: 0;
+  font-size: 18px;
+}
+
+@media screen and (max-width: 768px) {
+  .pagination__mobile {
+    display: flex;
+  }
+
+  .pagination__standard {
+    display: none;
+  }
+}

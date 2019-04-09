@@ -2,13 +2,19 @@ import React, { Component } from 'react';
 import './App.scss';
 import Rater from 'react-rater';
 import 'react-rater/lib/react-rater.css';
+// import {
+//   Pagination,
+//   PaginationPrev,
+//   PaginationNext,
+//   withPagination,
+//   getPage,
+// } from './Pagination';
 import ReviewForm from './ReviewForm';
 import Reaction from './Reaction';
 import maui from './assets/maui-art.png';
 import title from './assets/title.png';
-import cancel from './assets/cancel.svg';
 
-const Review = ({ review, index, removeReview }) => {
+const Review = ({ review }) => {
   const { datetime, text, rating } = review;
 
   const formatDate = dt => {
@@ -19,15 +25,11 @@ const Review = ({ review, index, removeReview }) => {
 
   return (
     <div className="review">
-      <div className="review__datetime">{formatDate(datetime)}</div>
-      <Rater total={5} rating={rating} interactive={false} />
+      <div className="review__header">
+        <div className="review__datetime">{formatDate(datetime)}</div>
+        <Rater total={5} rating={rating} interactive={false} />
+      </div>
       <div className="review__text">{text}</div>
-      <img
-        className="review__cancel"
-        onClick={() => removeReview(index)}
-        src={cancel}
-        alt="Remove Review"
-      />
     </div>
   );
 };
@@ -40,7 +42,7 @@ const LeftContent = ({ reviews, currentIndex }) => (
   </div>
 );
 
-const RightContent = ({ reviews, addReview, removeReview }) => (
+const RightContent = ({ reviews, addReview }) => (
   <div className="content content--right">
     <div className="review-board">
       <div className="review-board__header">
@@ -59,13 +61,16 @@ const RightContent = ({ reviews, addReview, removeReview }) => (
         <ReviewForm addReview={addReview} />
       </div>
       <div className="review-container">
+        {/* <Pagination
+          current={currentPage}
+          total={products.data.length}
+          onChange={handlePaginationClick}
+          prevIcon={PaginationPrev}
+          nextIcon={PaginationNext}
+          pageSize={pageSize}
+        /> */}
         {reviews.map((review, index) => (
-          <Review
-            key={index}
-            index={index}
-            review={review}
-            removeReview={removeReview}
-          />
+          <Review key={index} index={index} review={review} />
         ))}
       </div>
     </div>
@@ -89,7 +94,13 @@ class App extends Component {
         text:
           'He tried to steal my boat and abandon me on an island alone. Not cool.',
         rating: 1,
-        datetime: 1551641410975,
+        datetime: 1550641410975,
+      },
+      {
+        text:
+          'He tried to steal my boat and abandon me on an island alone. Not cool.',
+        rating: 4,
+        datetime: 1541641010475,
       },
     ],
     currentIndex: 0,
@@ -109,15 +120,9 @@ class App extends Component {
 
   addReview = (text, rating) => {
     const newReviews = [
-      ...this.state.reviews,
       { text, rating, datetime: Date.now() },
+      ...this.state.reviews,
     ];
-    this.setState({ reviews: newReviews });
-  };
-
-  removeReview = index => {
-    const newReviews = [...this.state.reviews];
-    newReviews.splice(index, 1);
     this.setState({ reviews: newReviews });
   };
 
@@ -127,11 +132,7 @@ class App extends Component {
     return (
       <div className="App">
         <LeftContent reviews={reviews} currentIndex={currentIndex} />
-        <RightContent
-          reviews={reviews}
-          removeReview={this.removeReview}
-          addReview={this.addReview}
-        />
+        <RightContent reviews={reviews} addReview={this.addReview} />
       </div>
     );
   }

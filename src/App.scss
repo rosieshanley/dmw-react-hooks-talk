@@ -5,17 +5,16 @@
 }
 
 .content {
+  height: 100vh;
   &.content--left {
     width: 40%;
-    height: 100vh;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
+    background: #fce8c7ff;
   }
   &.content--right {
     width: 60%;
-    padding-bottom: 300px;
-    background: #fce8c7ff;
     border-left: 10px solid black;
   }
 }
@@ -23,7 +22,7 @@
 .review-board__header {
   display: flex;
   justify-content: center;
-  height: 100px;
+  height: 90px;
   margin: 40px 20px 20px;
   img {
     max-height: 100%;
@@ -43,8 +42,8 @@
 
 .review-form-container {
   font-size: 25px;
-  line-height: 40px;
-  margin: 50px 50px 30px;
+  line-height: 35px;
+  margin: 40px 50px 30px;
   text-align: center;
 }
 
@@ -53,7 +52,7 @@
   margin: 30px auto;
   .review-form__rater {
     display: flex;
-    align-content: center;
+    align-items: center;
     .review-form__rater__message {
       font-size: 12px;
       margin-left: 10px;
@@ -79,21 +78,22 @@
 
 .review-container {
   width: 600px;
-  margin: auto;
   display: flex;
   flex-wrap: wrap;
+  margin: 20px auto;
 }
 
 .review {
-  background: white;
   width: 500px;
   margin: 20px auto;
-  padding: 20px;
-  border: 2px solid black;
   position: relative;
   box-sizing: border-box;
-  .review__datetime {
+  .review__header {
     margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: bold;
   }
   .review__text {
     margin-top: 10px;
