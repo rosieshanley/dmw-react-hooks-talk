@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './App.scss';
-import Rater from 'react-rater';
 import 'react-rater/lib/react-rater.css';
 import {
   Pagination,
@@ -9,38 +8,11 @@ import {
   withPagination,
   getPage,
 } from './Pagination';
+import Review from './Review';
 import ReviewForm from './ReviewForm';
 import Reaction from './Reaction';
 import maui from './assets/maui-art.png';
 import title from './assets/title.png';
-
-const Review = ({ review }) => {
-  const { datetime, text, rating } = review;
-
-  const formatDate = dt => {
-    const timestamp = new Date(dt);
-    return `${timestamp.getMonth() +
-      1}/${timestamp.getDate()}/${timestamp.getUTCFullYear()}`;
-  };
-
-  return (
-    <div className="review">
-      <div className="review__header">
-        <div className="review__datetime">{formatDate(datetime)}</div>
-        <Rater total={5} rating={rating} interactive={false} />
-      </div>
-      <div className="review__text">{text}</div>
-    </div>
-  );
-};
-
-const LeftContent = ({ reviews, currentIndex }) => (
-  <div className="content content--left">
-    <div className="reaction">
-      <Reaction review={reviews[currentIndex]} />
-    </div>
-  </div>
-);
 
 class App extends Component {
   state = {
@@ -88,6 +60,10 @@ class App extends Component {
     clearInterval(this.interval);
   }
 
+  handlePaginationClick = page => {
+    this.setState({ currentPage: page });
+  };
+
   addReview = (text, rating) => {
     const newReviews = [
       { text, rating, datetime: Date.now() },
@@ -97,14 +73,17 @@ class App extends Component {
   };
 
   render() {
-    const { reviews, currentIndex } = this.state;
-    const { currentPage, handlePaginationClick } = this.props;
+    const { reviews, currentIndex, currentPage } = this.state;
     const pageSize = 4;
     const paginatedReviews = getPage(reviews, currentPage, pageSize);
 
     return (
       <div className="App">
-        <LeftContent reviews={reviews} currentIndex={currentIndex} />
+        <div className="content content--left">
+          <div className="reaction">
+            <Reaction review={reviews[currentIndex]} />
+          </div>
+        </div>
         <div className="content content--right">
           <div className="review-board">
             <div className="review-board__header">
@@ -130,7 +109,7 @@ class App extends Component {
                 <Pagination
                   current={currentPage}
                   total={reviews.length}
-                  onChange={handlePaginationClick}
+                  onChange={this.handlePaginationClick}
                   prevIcon={PaginationPrev}
                   nextIcon={PaginationNext}
                   pageSize={pageSize}
