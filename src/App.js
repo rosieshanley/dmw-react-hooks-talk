@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import './App.scss';
 import Rater from 'react-rater';
 import 'react-rater/lib/react-rater.css';
-// import {
-//   Pagination,
-//   PaginationPrev,
-//   PaginationNext,
-//   withPagination,
-//   getPage,
-// } from './Pagination';
+import {
+  Pagination,
+  PaginationPrev,
+  PaginationNext,
+  withPagination,
+  getPage,
+} from './Pagination';
 import ReviewForm from './ReviewForm';
 import Reaction from './Reaction';
 import maui from './assets/maui-art.png';
@@ -42,41 +42,6 @@ const LeftContent = ({ reviews, currentIndex }) => (
   </div>
 );
 
-const RightContent = ({ reviews, addReview }) => (
-  <div className="content content--right">
-    <div className="review-board">
-      <div className="review-board__header">
-        <img className="reversed" src={maui} alt="Maui" />
-        <img
-          src={title}
-          className="review-board__header__title"
-          alt="Maui's Kudos Board"
-        />
-        <img src={maui} alt="Maui" />
-      </div>
-      <div className="review-form-container">
-        Grateful for all that Maui has done for mankind?
-        <br />
-        <strong>Leave a review!</strong>
-        <ReviewForm addReview={addReview} />
-      </div>
-      <div className="review-container">
-        {/* <Pagination
-          current={currentPage}
-          total={products.data.length}
-          onChange={handlePaginationClick}
-          prevIcon={PaginationPrev}
-          nextIcon={PaginationNext}
-          pageSize={pageSize}
-        /> */}
-        {reviews.map((review, index) => (
-          <Review key={index} index={index} review={review} />
-        ))}
-      </div>
-    </div>
-  </div>
-);
-
 class App extends Component {
   state = {
     reviews: [
@@ -86,7 +51,7 @@ class App extends Component {
         datetime: 1551642810975,
       },
       {
-        text: "Brought us coconuts, but I'm allergic.",
+        text: "Brought us coconuts...but I'm allergic.",
         rating: 3,
         datetime: 1551642517315,
       },
@@ -97,13 +62,18 @@ class App extends Component {
         datetime: 1550641410975,
       },
       {
-        text:
-          'He tried to steal my boat and abandon me on an island alone. Not cool.',
+        text: 'He has cool tattoos and a lot of confidence.',
         rating: 4,
+        datetime: 1541641010475,
+      },
+      {
+        text: 'Kind of an egomaniac.',
+        rating: 2,
         datetime: 1541641010475,
       },
     ],
     currentIndex: 0,
+    currentPage: 1,
   };
 
   componentDidMount() {
@@ -128,14 +98,50 @@ class App extends Component {
 
   render() {
     const { reviews, currentIndex } = this.state;
+    const { currentPage, handlePaginationClick } = this.props;
+    const pageSize = 4;
+    const paginatedReviews = getPage(reviews, currentPage, pageSize);
 
     return (
       <div className="App">
         <LeftContent reviews={reviews} currentIndex={currentIndex} />
-        <RightContent reviews={reviews} addReview={this.addReview} />
+        <div className="content content--right">
+          <div className="review-board">
+            <div className="review-board__header">
+              <img className="reversed" src={maui} alt="Maui" />
+              <img
+                src={title}
+                className="review-board__header__title"
+                alt="Maui's Kudos Board"
+              />
+              <img src={maui} alt="Maui" />
+            </div>
+            <div className="review-form-container">
+              Grateful for all that Maui has done for mankind?
+              <br />
+              <strong>Leave a review!</strong>
+              <ReviewForm addReview={this.addReview} />
+            </div>
+            <div className="review-container">
+              {paginatedReviews.map((review, index) => (
+                <Review key={index} index={index} review={review} />
+              ))}
+              <div className="pagination-container">
+                <Pagination
+                  current={currentPage}
+                  total={reviews.length}
+                  onChange={handlePaginationClick}
+                  prevIcon={PaginationPrev}
+                  nextIcon={PaginationNext}
+                  pageSize={pageSize}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
 }
 
-export default App;
+export default withPagination(App);

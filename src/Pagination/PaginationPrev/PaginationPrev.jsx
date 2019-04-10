@@ -1,5 +1,5 @@
 import React from 'react';
-import prevArrow from 'assets/Mobile_Pagination_Arrow_02.svg';
+import prevArrow from '../../assets/Mobile_Pagination_Arrow_02.svg';
 
 const PaginationPrev = (
   <img

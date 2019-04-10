@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { string, shape } from 'prop-types';
 
 export const withPagination = WrappedComponent => {
   class PaginationState extends Component {
@@ -9,17 +8,6 @@ export const withPagination = WrappedComponent => {
         currentPage: 1,
       };
     }
-
-    componentDidUpdate = prevProps => {
-      const { field: prevField } = prevProps.sort;
-      const {
-        sort: { field },
-      } = this.props;
-
-      if (prevField !== field) {
-        this.setState({ currentPage: 1 });
-      }
-    };
 
     handlePaginationClick = page => {
       this.setState({ currentPage: page });
@@ -37,12 +25,6 @@ export const withPagination = WrappedComponent => {
       );
     }
   }
-
-  PaginationState.propTypes = {
-    sort: shape({
-      field: string,
-    }).isRequired,
-  };
 
   return PaginationState;
 };

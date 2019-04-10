@@ -1,5 +1,5 @@
 import React from 'react';
-import nextArrow from 'assets/Mobile_Pagination_Arrow_01.svg';
+import nextArrow from '../../assets/Mobile_Pagination_Arrow_01.svg';
 
 const PaginationNext = (
   <img

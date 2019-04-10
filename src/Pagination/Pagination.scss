@@ -1,5 +1,3 @@
-@import '~nutrien-style-guide/src/lib/colors/colors';
-
 .pagination {
   margin: 0;
   padding: 0;
@@ -10,7 +8,7 @@
 
 .rc-pagination-prev,
 .rc-pagination-next {
-  color: $nutrien-green;
+  color: black;
 }
 
 .rc-pagination-prev,
@@ -31,7 +29,7 @@
 .rc-pagination-item {
   font-weight: 600;
   text-align: center;
-  color: $nutrien-grey-2;
+  color: #828587;
 }
 .rc-pagination-item:hover {
   border: none;
@@ -44,11 +42,11 @@
 
 .rc-pagination-item-active {
   border-radius: 0;
-  background: $nutrien-grey--disabled-fill;
+  background: #ececec;
 }
 
 .rc-pagination-disabled {
-  color: $nutrien-grey--icon;
+  color: #a1a1a1;
 }
 
 .rc-pagination-jump-prev:after,
@@ -56,7 +54,7 @@
   content: '\2022\2022\2022';
   display: block;
   letter-spacing: 3px;
-  color: $nutrien-grey--inactive-outline;
+  color: #cccccc;
 }
 
 .pagination__mobile .rc-pagination-disabled {
@@ -92,9 +90,9 @@
 .pagination__mobile input {
   margin: 0 8px;
   box-sizing: border-box;
-  background-color: $nutrien-white;
+  background-color: #fff;
   border-radius: 6px;
-  border: 1px solid $nutrien-light-grey-2;
+  border: 1px solid #828587;
   outline: none;
   padding: 5px 8px;
   min-height: 20px;
