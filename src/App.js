@@ -51,7 +51,12 @@ class App extends Component {
 
   render() {
     const { reviews, currentIndex } = this.state;
-    const { currentPage, handlePaginationClick, updateSort } = this.props;
+    const {
+      currentPage,
+      handlePaginationClick,
+      updateSort,
+      sortField,
+    } = this.props;
     const pageSize = 4;
     const paginatedReviews = getPage(reviews, currentPage, pageSize);
 
@@ -83,6 +88,7 @@ class App extends Component {
               <div className="review-sort">
                 <div className="review-sort__title">Display by:</div>
                 <div
+                  className={sortField === 'rating' ? 'bold' : ''}
                   onClick={() =>
                     this.sortReviews(reviews, 'rating', updateSort)
                   }
@@ -91,6 +97,7 @@ class App extends Component {
                 </div>
                 <div className="divider">|</div>
                 <div
+                  className={sortField === 'datetime' ? 'bold' : ''}
                   onClick={() =>
                     this.sortReviews(reviews, 'datetime', updateSort)
                   }
