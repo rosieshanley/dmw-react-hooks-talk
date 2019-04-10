@@ -73,7 +73,6 @@ class App extends Component {
       },
     ],
     currentIndex: 0,
-    currentPage: 1,
   };
 
   componentDidMount() {
