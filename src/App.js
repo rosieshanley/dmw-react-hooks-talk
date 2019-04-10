@@ -43,7 +43,6 @@ function App() {
     setSortField(field);
   };
 
-  // https://overreacted.io/making-setinterval-declarative-with-react-hooks/
   useEffect(() => {
     const timeout = setTimeout(() => {
       setCurrentIndex((currentIndex + 1) % reviews.length);
