@@ -87,6 +87,18 @@
   margin: auto;
 }
 
+.review-sort {
+  width: 500px;
+  margin: 0 auto;
+  display: inline-flex;
+  .review-sort__title {
+    margin-right: 10px;
+  }
+  .divider {
+    margin: 0 10px;
+  }
+}
+
 .review {
   width: 500px;
   margin: 20px auto;

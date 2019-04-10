@@ -6,20 +6,33 @@ export const withPagination = WrappedComponent => {
       super(props);
       this.state = {
         currentPage: 1,
+        sortField: 'datetime',
       };
     }
+
+    componentDidUpdate = (prevProps, prevState) => {
+      if (prevState.sortField !== this.state.sortField) {
+        this.setState({ currentPage: 1 });
+      }
+    };
+
+    updateSort = sortField => {
+      this.setState({ sortField });
+    };
 
     handlePaginationClick = page => {
       this.setState({ currentPage: page });
     };
 
     render() {
-      const { currentPage } = this.state;
+      const { sortField, currentPage } = this.state;
 
       return (
         <WrappedComponent
           {...this.props}
+          sortField={sortField}
           currentPage={currentPage}
+          updateSort={this.updateSort}
           handlePaginationClick={this.handlePaginationClick}
         />
       );

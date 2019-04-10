@@ -41,9 +41,17 @@ class App extends Component {
     this.setState({ reviews: newReviews });
   };
 
+  sortReviews = (reviews, field, updateSort) => {
+    const updatedReviews = Array.from(reviews).sort(
+      (a, b) => b[field] - a[field]
+    );
+    this.setState({ reviews: updatedReviews, sortField: field });
+    updateSort(field);
+  };
+
   render() {
     const { reviews, currentIndex } = this.state;
-    const { currentPage, handlePaginationClick } = this.props;
+    const { currentPage, handlePaginationClick, updateSort } = this.props;
     const pageSize = 4;
     const paginatedReviews = getPage(reviews, currentPage, pageSize);
 
@@ -72,6 +80,24 @@ class App extends Component {
               <ReviewForm addReview={this.addReview} />
             </div>
             <div className="review-container">
+              <div className="review-sort">
+                <div className="review-sort__title">Display by:</div>
+                <div
+                  onClick={() =>
+                    this.sortReviews(reviews, 'rating', updateSort)
+                  }
+                >
+                  Rating
+                </div>
+                <div className="divider">|</div>
+                <div
+                  onClick={() =>
+                    this.sortReviews(reviews, 'datetime', updateSort)
+                  }
+                >
+                  Date
+                </div>
+              </div>
               {paginatedReviews.map((review, index) => (
                 <Review key={index} index={index} review={review} />
               ))}
