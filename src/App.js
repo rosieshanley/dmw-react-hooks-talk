@@ -5,7 +5,7 @@ import {
   Pagination,
   PaginationPrev,
   PaginationNext,
-  getPage,
+  usePagination,
 } from './Pagination';
 import Review from './Review';
 import ReviewForm from './ReviewForm';
@@ -15,12 +15,16 @@ import maui from './assets/maui-art.png';
 import title from './assets/title.png';
 
 function App() {
-  let [reviews, setReviews] = useState(initialReviews);
-  let [currentIndex, setCurrentIndex] = useState(0);
-  let [currentPage, setCurrentPage] = useState(1);
-
   const pageSize = 4;
-  const paginatedReviews = getPage(reviews, currentPage, pageSize);
+
+  let [currentIndex, setCurrentIndex] = useState(0);
+  let [reviews, setReviews] = useState(initialReviews);
+  let [sortField, setSortField] = useState('datetime');
+  const [paginatedReviews, currentPage, setCurrentPage] = usePagination(
+    reviews,
+    pageSize,
+    sortField
+  );
 
   const handlePaginationClick = page => {
     setCurrentPage(page);
@@ -29,6 +33,14 @@ function App() {
   const addReview = (text, rating) => {
     const newReviews = [{ text, rating, datetime: Date.now() }, ...reviews];
     setReviews(newReviews);
+  };
+
+  const sortReviews = (reviews, field) => {
+    const updatedReviews = Array.from(reviews).sort(
+      (a, b) => b[field] - a[field]
+    );
+    setReviews(updatedReviews);
+    setSortField(field);
   };
 
   // https://overreacted.io/making-setinterval-declarative-with-react-hooks/
@@ -66,6 +78,22 @@ function App() {
             <ReviewForm addReview={addReview} />
           </div>
           <div className="review-container">
+            <div className="review-sort">
+              <div className="review-sort__title">Display by:</div>
+              <div
+                className={sortField === 'rating' ? 'bold' : ''}
+                onClick={() => sortReviews(reviews, 'rating')}
+              >
+                Rating
+              </div>
+              <div className="divider">|</div>
+              <div
+                className={sortField === 'datetime' ? 'bold' : ''}
+                onClick={() => sortReviews(reviews, 'datetime')}
+              >
+                Date
+              </div>
+            </div>
             {paginatedReviews.map((review, index) => (
               <Review key={index} index={index} review={review} />
             ))}
