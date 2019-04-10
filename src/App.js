@@ -5,7 +5,6 @@ import {
   Pagination,
   PaginationPrev,
   PaginationNext,
-  withPagination,
   getPage,
 } from './Pagination';
 import Review from './Review';
@@ -123,4 +122,4 @@ class App extends Component {
   }
 }
 
-export default withPagination(App);
+export default App;
