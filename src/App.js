@@ -19,6 +19,7 @@ class App extends Component {
     reviews: initialReviews,
     currentIndex: 0,
     currentPage: 1,
+    sortField: 'datetime',
   };
 
   componentDidMount() {
@@ -33,6 +34,12 @@ class App extends Component {
     clearInterval(this.interval);
   }
 
+  componentDidUpdate = (prevProps, prevState) => {
+    if (prevState.sortField !== this.state.sortField) {
+      this.setState({ currentPage: 1 });
+    }
+  };
+
   handlePaginationClick = page => {
     this.setState({ currentPage: page });
   };
@@ -43,6 +50,13 @@ class App extends Component {
       ...this.state.reviews,
     ];
     this.setState({ reviews: newReviews });
+  };
+
+  sortReviews = (reviews, field) => {
+    const updatedReviews = Array.from(reviews).sort(
+      (a, b) => b[field] - a[field]
+    );
+    this.setState({ reviews: updatedReviews, sortField: field });
   };
 
   render() {
@@ -75,6 +89,16 @@ class App extends Component {
               <ReviewForm addReview={this.addReview} />
             </div>
             <div className="review-container">
+              <div className="review-sort">
+                <div className="review-sort__title">Display by:</div>
+                <div onClick={() => this.sortReviews(reviews, 'rating')}>
+                  Rating
+                </div>
+                <div className="divider">|</div>
+                <div onClick={() => this.sortReviews(reviews, 'datetime')}>
+                  Date
+                </div>
+              </div>
               {paginatedReviews.map((review, index) => (
                 <Review key={index} index={index} review={review} />
               ))}

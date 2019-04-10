@@ -25,6 +25,11 @@ const initialReviews = [
     rating: 2,
     datetime: 1541641010475,
   },
+  {
+    text: "Harnessed the moon! That's made for some great surfing.",
+    rating: 5,
+    datetime: 1541641010475,
+  },
 ];
 
 export default initialReviews;
